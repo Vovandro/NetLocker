@@ -77,5 +77,6 @@ build_docker:
     - docker push $CONTAINER_RELEASE_LATEST_IMAGE
   only:
     - tags
+    - main
   except:
     - branches
