@@ -1,0 +1,25 @@
+engine:
+  - type: metrics
+    name: metrics
+    service_name: NetLocker
+    port: 8090
+  - type: trace
+    name: trace
+    service_name: NetLocker
+    interval: 30s
+  - type: logger
+    name: std
+    level: INFO
+    enable: true
+  - type: cache
+    name: primary
+    hosts: localhost:6379
+  - type: server
+    name: grpc
+    port: 8080
+  - type: service
+    name: lock
+    shard_count: 5
+
+cfg:
+  custom: test
