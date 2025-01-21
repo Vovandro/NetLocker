@@ -5,6 +5,7 @@ import (
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/repository"
 	"gitlab.com/devpro_studio/Paranoia/pkg/cache/redis"
+	"gitlab.com/devpro_studio/go_utils/decode"
 	"math/rand"
 	"strconv"
 	"time"
@@ -13,6 +14,12 @@ import (
 type Repository struct {
 	repository.Mock
 	cache redis.IRedis
+	cfg   RepositoryConfig
+}
+
+type RepositoryConfig struct {
+	EnableDoubleCheck bool  `yaml:"enable_double_check"`
+	TimeCheck         int64 `yaml:"time_check"`
 }
 
 func New(name string) *Repository {
@@ -24,6 +31,15 @@ func New(name string) *Repository {
 }
 
 func (t *Repository) Init(app interfaces.IEngine, cfg map[string]interface{}) error {
+	err := decode.Decode(cfg, &t.cfg, "yaml", decode.DecoderStrongFoundDst)
+	if err != nil {
+		return err
+	}
+
+	if t.cfg.EnableDoubleCheck && t.cfg.TimeCheck <= 0 {
+		t.cfg.TimeCheck = 1000
+	}
+
 	t.cache = app.GetPkg(interfaces.PkgCache, "primary").(redis.IRedis)
 
 	return nil
@@ -45,13 +61,15 @@ func (t *Repository) TryAndLock(key string, timeout int64) bool {
 	if err != nil {
 		return false
 	}
-	time.Sleep(time.Millisecond)
-	val, err := t.cache.Get(context.Background(), key)
-	if err != nil {
-		return false
-	}
-	if val != rndStr {
-		return false
+	if t.cfg.EnableDoubleCheck {
+		time.Sleep(time.Duration(t.cfg.TimeCheck))
+		val, err := t.cache.Get(context.Background(), key)
+		if err != nil {
+			return false
+		}
+		if val != rndStr {
+			return false
+		}
 	}
 
 	return true

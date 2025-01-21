@@ -20,6 +20,10 @@ engine:
   - type: service
     name: lock
     shard_count: 5
+  - type: repository
+    name: lock
+    enable_double_check: true
+    time_check: 1000
 
 cfg:
   custom: test

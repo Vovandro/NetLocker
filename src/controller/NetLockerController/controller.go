@@ -6,8 +6,6 @@ import (
 	"gitlab.com/devpro_studio/Paranoia/paranoia/controller"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
 	"gitlab.com/devpro_studio/Paranoia/pkg/server/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type Controller struct {
@@ -32,10 +30,30 @@ func (t *Controller) Init(app interfaces.IEngine, _ map[string]interface{}) erro
 	return nil
 }
 
-func (t *Controller) TryAndLock(context.Context, *NetLockRequest) (*NetLockerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TryAndLock not implemented")
+func (t *Controller) TryAndLock(c context.Context, req *NetLockRequest) (*NetLockerResponse, error) {
+	resp := &NetLockerResponse{}
+
+	err := t.lockService.Lock(c, req.Key, req.TimeLock)
+
+	if err != nil {
+		resp.Success = false
+	} else {
+		resp.Success = true
+	}
+
+	return resp, nil
 }
 
-func (t *Controller) Unlock(context.Context, *NetUnlockRequest) (*NetLockerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Unlock not implemented")
+func (t *Controller) Unlock(c context.Context, req *NetUnlockRequest) (*NetLockerResponse, error) {
+	resp := &NetLockerResponse{}
+
+	err := t.lockService.Unlock(c, req.Key)
+
+	if err != nil {
+		resp.Success = false
+	} else {
+		resp.Success = true
+	}
+
+	return resp, nil
 }
