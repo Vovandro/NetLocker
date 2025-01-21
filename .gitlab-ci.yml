@@ -27,6 +27,8 @@ testing:
     when: always
     reports:
       junit: report.xml
+  except:
+    - tags
 
 coverage:
   stage: test
@@ -49,6 +51,8 @@ coverage:
         coverage_format: cobertura
         path: coverage.xml
   coverage: /total:\s+\(statements\)\s+(\d+.\d+\%)/
+  except:
+    - tags
 
 build_docker:
   stage: build
@@ -69,4 +73,6 @@ build_docker:
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
   only:
-    - master
+    - tags
+  except:
+    - branches
