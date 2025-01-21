@@ -11,7 +11,6 @@ ENV GOPATH /go
 
 COPY go.mod .
 COPY go.sum .
-COPY .go/pkg/mod /go/pkg/mod
 RUN go mod download && go mod verify
 
 COPY . .
