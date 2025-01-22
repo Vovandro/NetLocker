@@ -33,4 +33,4 @@ manner, preventing race conditions and other issues related to parallelism.
 
 ## License
 
-This application is distributed under the GPT-2 license. Refer to the `LICENSE` file for more details.
+This application is distributed under the BSD-2 license. Refer to the `LICENSE` file for more details.
