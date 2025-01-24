@@ -50,6 +50,12 @@ func (t *Service) Init(app interfaces.IEngine, cfg map[string]interface{}) error
 		t.cfg.ShardCount = 1
 	}
 
+	t.init()
+
+	return nil
+}
+
+func (t *Service) init() {
 	t.poolShard = make([]chan dataSource, t.cfg.ShardCount)
 	for i := 0; i < t.cfg.ShardCount; i++ {
 		t.poolShard[i] = make(chan dataSource, 100)
@@ -57,8 +63,6 @@ func (t *Service) Init(app interfaces.IEngine, cfg map[string]interface{}) error
 	}
 
 	t.wg.Add(t.cfg.ShardCount)
-
-	return nil
 }
 
 func (t *Service) Stop() error {
@@ -84,8 +88,9 @@ func (t *Service) worker(num int) {
 				err := t.lockRepository.Unlock(data.key)
 				if err != nil {
 					data.res <- false
+				} else {
+					data.res <- true
 				}
-				data.res <- true
 			} else {
 				data.res <- t.lockRepository.TryAndLock(data.key, data.timeout)
 			}

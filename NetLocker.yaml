@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Lock Service API
+  description: API for managing locking using keys.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /lock:
+    get:
+      summary: Lock resource
+      description: This method is used to lock a resource using a key and lock time.
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: Unique identifier for locking.
+          schema:
+            type: string
+        - name: time_lock
+          in: query
+          required: true
+          description: Lock time in seconds.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resource successfully locked.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "true"
+        '422':
+          description: Invalid request data.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "invalid request data"
+  /unlock:
+    get:
+      summary: Unlock resource
+      description: This method is used to unlock a resource using a key.
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: Unique identifier for locking.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resource successfully unlocked.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "true"
+        '422':
+          description: Invalid request data.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "invalid request data"
