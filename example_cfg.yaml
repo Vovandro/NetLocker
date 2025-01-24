@@ -1,10 +1,10 @@
 engine:
   - type: metrics
-    name: metrics
+    name: prometheus
     service_name: NetLocker
     port: 8090
   - type: trace
-    name: trace
+    name: std
     service_name: NetLocker
     interval: 30s
   - type: logger
@@ -16,6 +16,9 @@ engine:
     hosts: localhost:6379
   - type: server
     name: grpc
+    port: 8080
+  - type: server
+    name: http
     port: 8080
   - type: service
     name: lock

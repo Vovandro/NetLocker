@@ -33,13 +33,7 @@ func (t *Controller) Init(app interfaces.IEngine, _ map[string]interface{}) erro
 func (t *Controller) TryAndLock(c context.Context, req *NetLockRequest) (*NetLockerResponse, error) {
 	resp := &NetLockerResponse{}
 
-	err := t.lockService.Lock(c, req.Key, req.TimeLock)
-
-	if err != nil {
-		resp.Success = false
-	} else {
-		resp.Success = true
-	}
+	resp.Success = t.lockService.Lock(c, req.Key, req.TimeLock) == nil
 
 	return resp, nil
 }
@@ -47,13 +41,7 @@ func (t *Controller) TryAndLock(c context.Context, req *NetLockRequest) (*NetLoc
 func (t *Controller) Unlock(c context.Context, req *NetUnlockRequest) (*NetLockerResponse, error) {
 	resp := &NetLockerResponse{}
 
-	err := t.lockService.Unlock(c, req.Key)
-
-	if err != nil {
-		resp.Success = false
-	} else {
-		resp.Success = true
-	}
+	resp.Success = t.lockService.Unlock(c, req.Key) == nil
 
 	return resp, nil
 }
