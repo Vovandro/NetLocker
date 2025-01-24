@@ -7,6 +7,7 @@ import (
 	"gitlab.com/devpro_studio/NetLocker/src/service/LockService"
 	"gitlab.com/devpro_studio/Paranoia/paranoia"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
+	"gitlab.com/devpro_studio/Paranoia/pkg/cache/memory"
 	"gitlab.com/devpro_studio/Paranoia/pkg/cache/redis"
 	std_log "gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log"
 	"gitlab.com/devpro_studio/Paranoia/pkg/server/grpc"
@@ -20,8 +21,6 @@ func main() {
 	s := paranoia.New("NetLocker", "cfg.yaml")
 
 	s.PushPkg(std_log.New("std")).
-		PushPkg(redis.New("primary")).
-		PushModule(LockRepository.New("lock")).
 		PushModule(LockService.New("lock")).
 		PushModule(NetLockerController.New("controller"))
 
@@ -33,6 +32,16 @@ func main() {
 
 	if len(cfg.GetConfigItem(interfaces.PkgServer, "http")) > 0 {
 		s.PushPkg(http.New("http"))
+	}
+
+	switch cfg.GetString("cache_type", "redis") {
+	case "redis":
+		s.PushPkg(redis.New("primary")).
+			PushModule(LockRepository.NewRedis("lock"))
+
+	case "memory":
+		s.PushPkg(memory.New("primary")).
+			PushModule(LockRepository.NewMemory("lock"))
 	}
 
 	err := s.Init()
