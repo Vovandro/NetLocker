@@ -4,33 +4,28 @@ import (
 	"context"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/repository"
-	"gitlab.com/devpro_studio/Paranoia/pkg/cache/redis"
+	"gitlab.com/devpro_studio/Paranoia/pkg/cache/memory"
 	"gitlab.com/devpro_studio/go_utils/decode"
 	"math/rand"
 	"strconv"
 	"time"
 )
 
-type Repository struct {
+type MemoryRepository struct {
 	repository.Mock
-	cache redis.IRedis
+	cache memory.IMemory
 	cfg   RepositoryConfig
 }
 
-type RepositoryConfig struct {
-	EnableDoubleCheck bool  `yaml:"enable_double_check"`
-	TimeCheck         int64 `yaml:"time_check"`
-}
-
-func New(name string) *Repository {
-	return &Repository{
+func NewMemory(name string) *MemoryRepository {
+	return &MemoryRepository{
 		Mock: repository.Mock{
 			NamePkg: name,
 		},
 	}
 }
 
-func (t *Repository) Init(app interfaces.IEngine, cfg map[string]interface{}) error {
+func (t *MemoryRepository) Init(app interfaces.IEngine, cfg map[string]interface{}) error {
 	err := decode.Decode(cfg, &t.cfg, "yaml", decode.DecoderStrongFoundDst)
 	if err != nil {
 		return err
@@ -40,16 +35,16 @@ func (t *Repository) Init(app interfaces.IEngine, cfg map[string]interface{}) er
 		t.cfg.TimeCheck = 1000
 	}
 
-	t.cache = app.GetPkg(interfaces.PkgCache, "primary").(redis.IRedis)
+	t.cache = app.GetPkg(interfaces.PkgCache, "primary").(memory.IMemory)
 
 	return nil
 }
 
-func (t *Repository) Unlock(key string) error {
+func (t *MemoryRepository) Unlock(key string) error {
 	return t.cache.Delete(context.Background(), key)
 }
 
-func (t *Repository) TryAndLock(key string, timeout int64) bool {
+func (t *MemoryRepository) TryAndLock(key string, timeout int64) bool {
 	if t.cache.Has(context.Background(), key) {
 		return false
 	}

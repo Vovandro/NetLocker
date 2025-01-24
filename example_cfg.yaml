@@ -29,4 +29,4 @@ engine:
     time_check: 1000
 
 cfg:
-  custom: test
+  cache_type: redis
