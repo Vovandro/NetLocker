@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"gitlab.com/devpro_studio/NetLocker/src/controller/NetLockerController"
+	"gitlab.com/devpro_studio/NetLocker/src/controller/WebController"
 	"gitlab.com/devpro_studio/NetLocker/src/repository/LockRepository"
 	"gitlab.com/devpro_studio/NetLocker/src/service/LockService"
 	"gitlab.com/devpro_studio/Paranoia/paranoia"
@@ -21,17 +22,18 @@ func main() {
 	s := paranoia.New("NetLocker", "cfg.yaml")
 
 	s.PushPkg(std_log.New("std")).
-		PushModule(LockService.New("lock")).
-		PushModule(NetLockerController.New("controller"))
+		PushModule(LockService.New("lock"))
 
 	cfg := s.GetConfig()
 
 	if len(cfg.GetConfigItem(interfaces.PkgServer, "grpc")) > 0 {
-		s.PushPkg(grpc.New("grpc"))
+		s.PushPkg(grpc.New("grpc")).
+			PushModule(NetLockerController.New("grpc_controller"))
 	}
 
 	if len(cfg.GetConfigItem(interfaces.PkgServer, "http")) > 0 {
-		s.PushPkg(http.New("http"))
+		s.PushPkg(http.New("http")).
+			PushModule(WebController.New("web_controller"))
 	}
 
 	switch cfg.GetString("cache_type", "redis") {
