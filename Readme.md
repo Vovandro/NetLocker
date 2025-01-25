@@ -4,6 +4,10 @@
 
 # Service for Managing Access to Shared Resources
 
+[Container registry](https://gitlab.com/devpro_studio/NetLocker/container_registry/8235910)
+
+[Use Paranoia framework](https://gitlab.com/devpro_studio/Paranoia)
+
 ## Overview
 
 The service provides a solution for managing shared resources on a network using locking mechanisms.
