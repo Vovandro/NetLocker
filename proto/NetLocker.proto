@@ -7,10 +7,12 @@ package NetLocker;
 message NetLockRequest {
     string Key = 1;
     int64 TimeLock = 2;
+    optional string UniqueId = 3;
 }
 
 message NetUnlockRequest {
     string Key = 1;
+    optional string UniqueId = 3;
 }
 
 message NetLockerResponse {

@@ -2,12 +2,11 @@ package LockRepository
 
 import (
 	"context"
+	"fmt"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/repository"
 	"gitlab.com/devpro_studio/Paranoia/pkg/cache/redis"
 	"gitlab.com/devpro_studio/go_utils/decode"
-	"math/rand"
-	"strconv"
 	"time"
 )
 
@@ -45,19 +44,28 @@ func (t *RedisRepository) Init(app interfaces.IEngine, cfg map[string]interface{
 	return nil
 }
 
-func (t *RedisRepository) Unlock(key string) error {
+func (t *RedisRepository) Unlock(key string, id string) error {
+	if id != "" {
+		oldId, err := t.cache.Get(context.Background(), key)
+		if err == nil {
+			if oldId != id {
+				return fmt.Errorf("invalid unlock id")
+			}
+		} else {
+			return nil
+		}
+	}
+
 	return t.cache.Delete(context.Background(), key)
 }
 
-func (t *RedisRepository) TryAndLock(key string, timeout int64) bool {
-	if t.cache.Has(context.Background(), key) {
-		return false
+func (t *RedisRepository) TryAndLock(key string, id string, timeout int64) bool {
+	oldId, err := t.cache.Get(context.Background(), key)
+	if err == nil {
+		return oldId == id
 	}
 
-	rnd := rand.Int63()
-	rndStr := strconv.FormatInt(rnd, 10)
-
-	err := t.cache.Set(context.Background(), key, rndStr, time.Second*time.Duration(timeout))
+	err = t.cache.Set(context.Background(), key, id, time.Second*time.Duration(timeout))
 	if err != nil {
 		return false
 	}
@@ -67,7 +75,7 @@ func (t *RedisRepository) TryAndLock(key string, timeout int64) bool {
 		if err != nil {
 			return false
 		}
-		if val != rndStr {
+		if val != id {
 			return false
 		}
 	}

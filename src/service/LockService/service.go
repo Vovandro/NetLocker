@@ -20,6 +20,7 @@ type Service struct {
 
 type dataSource struct {
 	key        string
+	id         string
 	timeout    int64
 	res        chan bool
 	isDeleteOp bool
@@ -85,14 +86,14 @@ func (t *Service) worker(num int) {
 			}
 
 			if data.isDeleteOp {
-				err := t.lockRepository.Unlock(data.key)
+				err := t.lockRepository.Unlock(data.key, data.id)
 				if err != nil {
 					data.res <- false
 				} else {
 					data.res <- true
 				}
 			} else {
-				data.res <- t.lockRepository.TryAndLock(data.key, data.timeout)
+				data.res <- t.lockRepository.TryAndLock(data.key, data.id, data.timeout)
 			}
 
 			close(data.res)
@@ -100,12 +101,13 @@ func (t *Service) worker(num int) {
 	}
 }
 
-func (t *Service) Lock(ctx context.Context, key string, timeout int64) error {
+func (t *Service) Lock(ctx context.Context, key string, id string, timeout int64) error {
 	shard := t.getShardKey(key)
 	data := dataSource{
 		key:     key,
 		timeout: timeout,
 		res:     make(chan bool),
+		id:      id,
 	}
 	t.poolShard[shard] <- data
 
@@ -122,12 +124,13 @@ func (t *Service) Lock(ctx context.Context, key string, timeout int64) error {
 	return fmt.Errorf("timeout")
 }
 
-func (t *Service) Unlock(ctx context.Context, key string) error {
+func (t *Service) Unlock(ctx context.Context, key string, id string) error {
 	shard := t.getShardKey(key)
 	data := dataSource{
 		key:        key,
 		isDeleteOp: true,
 		res:        make(chan bool),
+		id:         id,
 	}
 	t.poolShard[shard] <- data
 
