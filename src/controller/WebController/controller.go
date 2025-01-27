@@ -2,6 +2,7 @@ package WebController
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"gitlab.com/devpro_studio/NetLocker/src/service/LockService"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/controller"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
@@ -35,6 +36,7 @@ func (t *Controller) Init(app interfaces.IEngine, _ map[string]interface{}) erro
 
 func (t *Controller) TryAndLock(c context.Context, ctx http.ICtx) {
 	key := ctx.GetRequest().GetQuery().Get("key")
+	id := ctx.GetRequest().GetQuery().Get("unique_id")
 	timeLockStr := ctx.GetRequest().GetQuery().Get("time_lock")
 	timeLock, err := strconv.ParseInt(timeLockStr, 10, 64)
 	if err != nil || timeLock <= 0 || key == "" {
@@ -43,7 +45,11 @@ func (t *Controller) TryAndLock(c context.Context, ctx http.ICtx) {
 		return
 	}
 
-	locked := t.lockService.Lock(c, key, timeLock) == nil
+	if id == "" {
+		id = uuid.New().String()
+	}
+
+	locked := t.lockService.Lock(c, key, id, timeLock) == nil
 
 	ctx.GetResponse().SetBody([]byte(strconv.FormatBool(locked)))
 	ctx.GetResponse().SetStatus(200)
@@ -52,13 +58,15 @@ func (t *Controller) TryAndLock(c context.Context, ctx http.ICtx) {
 
 func (t *Controller) Unlock(c context.Context, ctx http.ICtx) {
 	key := ctx.GetRequest().GetQuery().Get("key")
+	id := ctx.GetRequest().GetQuery().Get("unique_id")
+
 	if key == "" {
 		ctx.GetResponse().SetBody([]byte("invalid request data"))
 		ctx.GetResponse().SetStatus(422)
 		return
 	}
 
-	locked := t.lockService.Unlock(c, key) == nil
+	locked := t.lockService.Unlock(c, key, id) == nil
 
 	ctx.GetResponse().SetBody([]byte(strconv.FormatBool(locked)))
 	ctx.GetResponse().SetStatus(200)
