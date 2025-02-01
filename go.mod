@@ -3,9 +3,12 @@ module gitlab.com/devpro_studio/NetLocker
 go 1.23.4
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
-	gitlab.com/devpro_studio/Paranoia v1.0.2
+	gitlab.com/devpro_studio/Paranoia v1.0.3
+	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2
 	gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.0.1
+	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.0.0
 	gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log v1.0.0
 	gitlab.com/devpro_studio/Paranoia/pkg/server/grpc v1.0.0
 	gitlab.com/devpro_studio/Paranoia/pkg/server/http v1.0.0
@@ -25,7 +28,6 @@ require (
 	github.com/getsentry/sentry-go/otel v0.31.1 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.0 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
@@ -37,7 +39,6 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/redis/go-redis/v9 v9.7.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.59.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.59.0 // indirect
@@ -59,7 +60,7 @@ require (
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250124145028-65684f501c47 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250124145028-65684f501c47 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250127172529-29210b9bc287 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250127172529-29210b9bc287 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

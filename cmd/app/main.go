@@ -10,6 +10,7 @@ import (
 	"gitlab.com/devpro_studio/Paranoia/paranoia/interfaces"
 	"gitlab.com/devpro_studio/Paranoia/pkg/cache/memory"
 	"gitlab.com/devpro_studio/Paranoia/pkg/cache/redis"
+	sentry_log "gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log"
 	std_log "gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log"
 	"gitlab.com/devpro_studio/Paranoia/pkg/server/grpc"
 	"gitlab.com/devpro_studio/Paranoia/pkg/server/http"
@@ -21,10 +22,17 @@ import (
 func main() {
 	s := paranoia.New("NetLocker", "cfg.yaml")
 
-	s.PushPkg(std_log.New("std")).
-		PushModule(LockService.New("lock"))
+	s.PushModule(LockService.New("lock"))
 
 	cfg := s.GetConfig()
+
+	if len(cfg.GetConfigItem(interfaces.PkgLogger, "sentry")) > 0 {
+		s.PushPkg(sentry_log.New("sentry"))
+	}
+
+	if len(cfg.GetConfigItem(interfaces.PkgLogger, "std")) > 0 {
+		s.PushPkg(std_log.New("std"))
+	}
 
 	if len(cfg.GetConfigItem(interfaces.PkgServer, "grpc")) > 0 {
 		s.PushPkg(grpc.New("grpc")).
