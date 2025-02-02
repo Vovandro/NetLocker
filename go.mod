@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
-	gitlab.com/devpro_studio/Paranoia v1.0.3
+	gitlab.com/devpro_studio/Paranoia v1.0.4
 	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2
 	gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.0.1
 	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.0.0

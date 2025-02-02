@@ -71,6 +71,8 @@ gitlab.com/devpro_studio/Paranoia v1.0.2 h1:8uYX4SC6PfqlAAcEEvDlXJ+xcDxrnucG8Cqa
 gitlab.com/devpro_studio/Paranoia v1.0.2/go.mod h1:nehg6a2Ey9C42vJI//tmz1NwJTzqpwUW6ELqOD794q4=
 gitlab.com/devpro_studio/Paranoia v1.0.3 h1:k5JZLRQyR1fqG7cSHDXPtPyzHbbHMqwx37IidVTOcno=
 gitlab.com/devpro_studio/Paranoia v1.0.3/go.mod h1:nehg6a2Ey9C42vJI//tmz1NwJTzqpwUW6ELqOD794q4=
+gitlab.com/devpro_studio/Paranoia v1.0.4 h1:Vhp1ROjxSvBa3RzgmT4zv9CoaskGQlbDiYA4wa5cxVk=
+gitlab.com/devpro_studio/Paranoia v1.0.4/go.mod h1:nehg6a2Ey9C42vJI//tmz1NwJTzqpwUW6ELqOD794q4=
 gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2 h1:XKTTMmAtVZdiccEeLtIsIcp01Qf58Sf7H0iXjlcwYxA=
 gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2/go.mod h1:xfXZN/xWaCZioCfufE0hOeT2VsqLeSA3vA0qtjpwPPI=
 gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.0.1 h1:cjHQYwrpgJnJ4kxfMNP5ESYlBWv0hsW+KiQX+mdV+HQ=
