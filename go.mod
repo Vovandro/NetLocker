@@ -8,8 +8,8 @@ require (
 	gitlab.com/devpro_studio/Paranoia v1.0.4
 	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2
 	gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.0.1
-	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.0.0
-	gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log v1.0.0
+	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.0.1
+	gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log v1.0.1
 	gitlab.com/devpro_studio/Paranoia/pkg/server/grpc v1.0.0
 	gitlab.com/devpro_studio/Paranoia/pkg/server/http v1.0.0
 	gitlab.com/devpro_studio/go_utils v1.1.2
