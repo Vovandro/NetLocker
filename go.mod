@@ -5,16 +5,16 @@ go 1.23.4
 require (
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
-	gitlab.com/devpro_studio/Paranoia v1.0.4
-	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.0.2
-	gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.0.1
-	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.0.1
-	gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log v1.0.1
-	gitlab.com/devpro_studio/Paranoia/pkg/server/grpc v1.0.0
-	gitlab.com/devpro_studio/Paranoia/pkg/server/http v1.0.0
-	gitlab.com/devpro_studio/go_utils v1.1.2
+	gitlab.com/devpro_studio/Paranoia v1.2.1
+	gitlab.com/devpro_studio/Paranoia/pkg/cache/memory v1.2.0
+	gitlab.com/devpro_studio/Paranoia/pkg/cache/redis v1.2.0
+	gitlab.com/devpro_studio/Paranoia/pkg/logger/sentry-log v1.2.0
+	gitlab.com/devpro_studio/Paranoia/pkg/logger/std-log v1.2.0
+	gitlab.com/devpro_studio/Paranoia/pkg/server/grpc v1.2.0
+	gitlab.com/devpro_studio/Paranoia/pkg/server/http v1.2.2
+	gitlab.com/devpro_studio/go_utils v1.1.3
 	google.golang.org/grpc v1.70.0
-	google.golang.org/protobuf v1.36.4
+	google.golang.org/protobuf v1.36.5
 )
 
 require (
@@ -28,7 +28,8 @@ require (
 	github.com/getsentry/sentry-go/otel v0.31.1 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.0 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.1 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
@@ -58,9 +59,9 @@ require (
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250127172529-29210b9bc287 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250127172529-29210b9bc287 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250207221924-e9438ea467c6 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250207221924-e9438ea467c6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

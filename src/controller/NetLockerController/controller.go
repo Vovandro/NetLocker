@@ -2,6 +2,7 @@ package NetLockerController
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"gitlab.com/devpro_studio/NetLocker/src/service/LockService"
 	"gitlab.com/devpro_studio/Paranoia/paranoia/controller"
@@ -34,6 +35,10 @@ func (t *Controller) Init(app interfaces.IEngine, _ map[string]interface{}) erro
 func (t *Controller) TryAndLock(c context.Context, req *NetLockRequest) (*NetLockerResponse, error) {
 	resp := &NetLockerResponse{}
 
+	if req.Key == "" {
+		return nil, fmt.Errorf("invalid request data")
+	}
+
 	if req.UniqueId == nil || *req.UniqueId == "" {
 		req.UniqueId = new(string)
 		*req.UniqueId = uuid.New().String()
@@ -46,6 +51,10 @@ func (t *Controller) TryAndLock(c context.Context, req *NetLockRequest) (*NetLoc
 
 func (t *Controller) Unlock(c context.Context, req *NetUnlockRequest) (*NetLockerResponse, error) {
 	resp := &NetLockerResponse{}
+
+	if req.Key == "" {
+		return nil, fmt.Errorf("invalid request data")
+	}
 
 	if req.UniqueId == nil {
 		req.UniqueId = new(string)
