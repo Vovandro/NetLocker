@@ -17,8 +17,8 @@ type RedisRepository struct {
 }
 
 type RepositoryConfig struct {
-	EnableDoubleCheck bool  `yaml:"enable_double_check"`
-	TimeCheck         int64 `yaml:"time_check"`
+	EnableDoubleCheck bool          `yaml:"enable_double_check"`
+	TimeCheck         time.Duration `yaml:"time_check"`
 }
 
 func NewRedis(name string) *RedisRepository {
@@ -36,7 +36,7 @@ func (t *RedisRepository) Init(app interfaces.IEngine, cfg map[string]interface{
 	}
 
 	if t.cfg.EnableDoubleCheck && t.cfg.TimeCheck <= 0 {
-		t.cfg.TimeCheck = 1000
+		t.cfg.TimeCheck = time.Second
 	}
 
 	t.cache = app.GetPkg(interfaces.PkgCache, "primary").(redis.IRedis)
@@ -70,7 +70,7 @@ func (t *RedisRepository) TryAndLock(key string, id string, timeout int64) bool 
 		return false
 	}
 	if t.cfg.EnableDoubleCheck {
-		time.Sleep(time.Duration(t.cfg.TimeCheck))
+		time.Sleep(t.cfg.TimeCheck)
 		val, err := t.cache.Get(context.Background(), key)
 		if err != nil {
 			return false
